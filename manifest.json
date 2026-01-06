@@ -1,11 +1,10 @@
 {
-	"id": "sample-plugin",
-	"name": "Sample Plugin",
+	"id": "quiz-blocks",
+	"name": "Quiz blocks",
 	"version": "1.0.0",
 	"minAppVersion": "0.15.0",
-	"description": "Demonstrates some of the capabilities of the Obsidian API.",
-	"author": "Obsidian",
-	"authorUrl": "https://obsidian.md",
-	"fundingUrl": "https://obsidian.md/pricing",
+	"description": "Render ```quiz code blocks into interactive multiple-choice quizzes. Pick an answer, check if you’re right, and see explanations right inside your notes.",
+	"author": "Igor Strebz",
+	"authorUrl": "https://stre.bz",
 	"isDesktopOnly": false
 }

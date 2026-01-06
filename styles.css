@@ -1,8 +1,156 @@
-/*
+.quiz-block {
+	--quiz-correct: rgba(28, 156, 117);
+	--quiz-wrong: rgba(255, 59, 48);
+	--quiz-icon-color: rgba(255, 255, 255);
+	--quiz-accent-color: rgb(255, 255, 255);
+}
 
-This CSS file will be included with your plugin, and
-available in the app when your plugin is enabled.
+@media (prefers-color-scheme: light) {
+	.quiz-block {
+		--quiz-icon-color: rgb(255, 255, 255);
+		--quiz-accent-color: rgba(0, 0, 0, .85);
+	}
+}
 
-If your plugin does not need CSS, delete this file.
+.quiz-block .is-hidden {
+	display: none;
+}
 
-*/
+.quiz-block {
+	border: 1px solid var(--background-modifier-border);
+	border-radius: 10px;
+	padding: 12px;
+	margin: 8px 0;
+}
+
+.quiz-block .quiz-block-error {
+	white-space: pre-wrap;
+}
+
+
+.quiz-block .quiz-question {
+	margin: 0 4px 10px;
+}
+
+
+.quiz-block .quiz-option {
+	padding: 6px 8px;
+	border-radius: 8px;
+	margin: 0;
+}
+
+.quiz-block .quiz-option-text p {
+	margin: 0;
+}
+
+.quiz-block .quiz-option-label {
+	display: inline-flex;
+	align-items: flex-start;
+	gap: 8px;
+	cursor: pointer;
+}
+
+.quiz-block .quiz-option-feedback {
+	margin-left: 32px; /* a bit more, because control is 24px + gap */
+	margin-top: 4px;
+	font-size: var(--font-smaller);
+	line-height: 1.35;
+}
+
+.quiz-block .quiz-option-feedback p {
+	margin: 0;
+}
+
+.quiz-block .quiz-option-feedback.is-correct {
+	color: var(--quiz-correct);
+}
+
+.quiz-block .quiz-option-feedback.is-wrong {
+	color: var(--quiz-wrong);
+}
+
+
+.quiz-block .quiz-actions {
+	display: flex;
+	gap: 8px;
+	margin-top: 10px;
+}
+
+.quiz-block .visually-hidden {
+	width: 1px;
+	height: 1px;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	display: inline-block;
+	opacity: 0;
+	pointer-events: none;
+	clip: auto;
+	white-space: nowrap;
+	border: 0;
+}
+
+/* --- radio base (unanswered) --- */
+.quiz-block .quiz-form-choice__control.radio {
+	align-self: flex-start;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+
+	width: 24px;
+	height: 24px;
+
+	border-radius: 100px;
+	box-sizing: border-box;
+	overflow: hidden;
+	position: relative;
+
+	/* neutral ring */
+	color: var(--quiz-accent-color);
+	box-shadow: var(--quiz-accent-color) 0 0 0 1.5px inset;
+
+	transition: color, background-color 0.2s ease-in-out;
+}
+
+.quiz-block .quiz-form-choice__control.checkbox {
+	border-radius: 6px;
+}
+
+.quiz-block .quiz-form-choice__control.radio .radio__icon {
+	display: block;
+	pointer-events: none;
+}
+
+/* icon host (keeps layout stable) */
+.quiz-block .quiz-form-choice__control.radio .radio__icon-host {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+/* selected, still unanswered */
+.quiz-block .quiz-form-choice__control.radio.radio_checked:not(.radio_disabled) {
+	background-color: rgba(255, 255, 255, 0.12);
+}
+
+/* ✅ correct selected: green fill, KEEP white ring */
+.quiz-block .quiz-form-choice__control.radio.quiz-radio--correct.radio_disabled.radio_checked.radio_view_default {
+	background-color: var(--quiz-correct);
+	box-shadow: var(--quiz-correct) 0 0 0 1.5px inset;
+	color: var(--quiz-icon-color); /* icon color */
+}
+
+/* ⊖ correct but not selected: green ring + minus */
+.quiz-block .quiz-form-choice__control.radio.quiz-radio--correct.radio_disabled.radio_checked.radio_view_outline {
+	background-color: transparent;
+	box-shadow: var(--quiz-correct) 0 0 0 1.5px inset;
+	color: var(--quiz-correct);
+}
+
+/* ⓧ wrong selected: red fill, KEEP white ring */
+.quiz-block .quiz-form-choice__control.radio.quiz-radio--wrong.radio_disabled.radio_checked.radio_view_default {
+	background-color: var(--quiz-wrong);
+	box-shadow: var(--quiz-wrong) 0 0 0 1.5px inset;
+	color: var(--quiz-icon-color); /* icon color */
+}
