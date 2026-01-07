@@ -14,6 +14,7 @@
 		"@eslint/js": "9.39.2",
 		"@types/node": "25.0.3",
 		"esbuild": "0.27.2",
+		"eslint": "^9.39.2",
 		"eslint-plugin-obsidianmd": "0.1.9",
 		"globals": "17.0.0",
 		"jiti": "2.6.1",
@@ -22,8 +23,8 @@
 		"typescript-eslint": "8.52.0"
 	},
 	"dependencies": {
-		"yaml": "2.8.2",
 		"obsidian": "latest",
+		"yaml": "2.8.2",
 		"zod": "4.3.5"
 	}
 }

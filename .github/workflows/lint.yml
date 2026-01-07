@@ -30,6 +30,6 @@ jobs:
                   version: 10
                   cache: true
 
-            - run: pnpm install --frozen-lockfile
+            - run: pnpm install --frozen-lockfile --prod=false
             - run: pnpm run build --if-present
             - run: pnpm run lint
