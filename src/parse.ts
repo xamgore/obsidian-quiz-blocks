@@ -1,4 +1,4 @@
-import yaml from "js-yaml";
+import { parse } from "yaml";
 import { QuizSchema, type Quiz } from "./schemas";
 
 export function parseQuizBlock(source: string): Quiz {
@@ -7,7 +7,7 @@ export function parseQuizBlock(source: string): Quiz {
 
 	let parsed: unknown;
 	try {
-		parsed = yaml.load(raw, { schema: yaml.JSON_SCHEMA });
+		parsed = parse(raw, { schema: 'core', logLevel: 'error', stringKeys: true });
 	} catch (e) {
 		throw new Error(`Failed to parse quiz block as YAML.\n${String(e)}`);
 	}

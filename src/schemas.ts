@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const nullToUndefined = <T extends z.ZodTypeAny>(schema: T) =>
+export const nullToUndefined = <T extends z.ZodType>(schema: T) =>
 	z.preprocess((v) => (v === null ? undefined : v), schema.optional());
 
 export const QuizSectionSchema = z.object({

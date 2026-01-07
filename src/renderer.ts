@@ -140,6 +140,7 @@ export async function renderQuiz({ app, component, source, el, ctx }: RenderArgs
 		unwrapSingleParagraph(row.feedbackEl);
 	};
 
+	/* eslint-disable @typescript-eslint/no-misused-promises */
 	checkBtn.addEventListener("click", async () => {
 		const selectedRows = rows.filter((r) => r.input.checked);
 		if (selectedRows.length === 0) return;
@@ -163,7 +164,7 @@ export async function renderQuiz({ app, component, source, el, ctx }: RenderArgs
 				else setRadioState(r.control, r.input, "disabled_unselected");
 			}
 
-			selected && await showFeedback(selected, selected?.correct);
+			if (selected) await showFeedback(selected, selected?.correct);
 
 			const correctRow = rows.find((r) => r.correct);
 			if (correctRow && correctRow !== selected) await showFeedback(correctRow, true);
@@ -232,7 +233,7 @@ function setRadioState(
 
 	control.addClass("radio");
 
-	const iconHost = control.querySelector(".radio__icon-host") as HTMLElement | null;
+	const iconHost = control.querySelector(".radio__icon-host");
 	if (iconHost) iconHost.empty();
 
 	const set = (opts: {
