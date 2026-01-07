@@ -410,7 +410,7 @@ async function renderChoiceQuiz(
 	type QRow = {
 		select: HTMLSelectElement;
 		resultHost: HTMLDivElement;
-		correctOption: string;
+		correctOption?: string;
 		feedbackText?: string;
 	};
 
@@ -489,7 +489,7 @@ async function renderChoiceQuiz(
 
 		for (const r of rows) {
 			const selectedId = r.select.value;
-			const isCorrect = selectedId === r.correctOption;
+			const isCorrect = selectedId === r.correctOption && typeof r.correctOption !== 'undefined';
 			const selectedOpt = quiz.options.find((o) => (o.id ?? o.content) === selectedId);
 
 			// consume answer: remove select, replace with answer block + feedback
