@@ -23,6 +23,23 @@ options:
   feedback: ""
 \`\`\``;
 
+const choiceTemplate = `\`\`\`quiz
+type: choice
+content: "Match each situation with the correct option."
+
+options:
+- id: opt1
+  content: "Option 1"
+- id: opt2
+  content: "Option 2"
+
+questions:
+- content: "Situation #1"
+  correct_option: opt1
+- content: "Situation #2"
+  correct_option: opt2
+\`\`\``;
+
 export default class QuizBlocksPlugin extends Plugin {
 	async onload() {
 		this.registerMarkdownCodeBlockProcessor("quiz", async (source, el, ctx) => {
@@ -48,6 +65,14 @@ export default class QuizBlocksPlugin extends Plugin {
 			name: "Insert quiz (checkbox)",
 			editorCallback: (editor) => {
 				editor.replaceRange(checkboxTemplate, editor.getCursor());
+			},
+		});
+
+		this.addCommand({
+			id: "insert-quiz-block-choice",
+			name: "Insert quiz (choice)",
+			editorCallback: (editor) => {
+				editor.replaceRange(choiceTemplate, editor.getCursor());
 			},
 		});
 	}

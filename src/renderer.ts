@@ -3,6 +3,7 @@ import {
 	MarkdownPostProcessorContext,
 	MarkdownRenderer,
 	Component,
+	Notice,
 } from "obsidian";
 import { parseQuizBlock } from "./parse";
 import type { Quiz } from "./schemas";
@@ -42,6 +43,18 @@ export async function renderQuiz({ app, component, source, el, ctx }: RenderArgs
 
 	const questionEl = container.createDiv({ cls: "quiz-question" });
 	await renderInlineMarkdown(app, component, quiz.content, questionEl, ctx.sourcePath);
+
+	if (quiz.type === "choice") {
+		await renderChoiceQuiz({
+			app,
+			component,
+			quiz,
+			container,
+			ctx,
+			rerender: () => renderQuiz({ app, component, source, el, ctx }),
+		});
+		return;
+	}
 
 	const form = container.createEl("form", { cls: "quiz-form" });
 	const groupName = `quiz-${hashToSafeName(stableId)}`;
@@ -362,6 +375,154 @@ function mountCheckbox(label: HTMLLabelElement, groupName: string, value: string
 	return { control, input };
 }
 
+type RenderChoiceArgs = {
+	app: App;
+	component: Component;
+	quiz: Extract<Quiz, { type: "choice" }>;
+	container: HTMLElement;
+	ctx: MarkdownPostProcessorContext;
+	rerender: () => Promise<void>;
+};
+
+async function renderChoiceQuiz(
+	{
+		app,
+		component,
+		quiz,
+		container,
+		ctx,
+		rerender,
+	}: RenderChoiceArgs
+): Promise<void> {
+	const questionsHost = container.createDiv({ cls: "quiz-choice-questions" });
+
+	// Precompute plain-text labels for <option> (since <option> can't host rich HTML).
+	const optionLabel = new Map<string, string>();
+	for (const opt of quiz.options) {
+		const id = opt.id ?? opt.content;
+		if (!id) continue;
+		optionLabel.set(
+			id,
+			(await markdownToPlainText(app, component, opt.content, ctx.sourcePath)) || id
+		);
+	}
+
+	type QRow = {
+		select: HTMLSelectElement;
+		resultHost: HTMLDivElement;
+		correctOption: string;
+		feedbackText?: string;
+	};
+
+	const rows: QRow[] = [];
+
+	for (const q of quiz.questions) {
+		const qWrap = questionsHost.createDiv({ cls: "quiz-choice-question" });
+
+		const qText = qWrap.createDiv({ cls: "quiz-choice-question-text" });
+		await renderInlineMarkdown(app, component, q.content, qText, ctx.sourcePath);
+
+		const select = qWrap.createEl("select", {
+			cls: "quiz-choice-select",
+			attr: { "aria-label": "Select an answer" },
+		});
+		select.createEl("option", { text: "...", value: "" });
+
+		for (const opt of quiz.options) {
+			const id = opt.id ?? opt.content;
+			if (!id) continue;
+			select.createEl("option", {
+				value: id,
+				text: optionLabel.get(id) ?? id,
+			});
+		}
+
+		// On each select change: remove ... variant and update the button
+		select.addEventListener("change", () => {
+			// If user picked something, remove the placeholder "..." from THIS select.
+			if (select.value) {
+				const placeholder = select.querySelector('option[value=""]');
+				placeholder?.remove();
+			}
+			updateCheckState();
+		});
+
+		const resultHost = qWrap.createDiv({ cls: "quiz-choice-result" });
+		rows.push({
+			select,
+			resultHost,
+			correctOption: q.correct_option,
+			feedbackText: q.feedback,
+		});
+	}
+
+	const actions = container.createDiv({ cls: "quiz-actions" });
+
+	const checkBtn = actions.createEl("button", {
+		text: "Check",
+		cls: "quiz-check",
+		attr: { type: "button" },
+	});
+
+	const resetBtn = actions.createEl("button", {
+		text: "↻",
+		cls: "quiz-reset is-hidden",
+		attr: { type: "button", "aria-label": "Reset quiz", title: "Reset quiz" },
+	});
+
+	function updateCheckState() {
+		const left = rows.reduce((acc, r) => acc + (r.select.value ? 0 : 1), 0);
+		checkBtn.disabled = left !== 0;
+		checkBtn.setText(left === 0 ? "Check" : `Check (${left} questions left)`);
+	}
+
+	updateCheckState(); // check button is disabled on start.
+
+	/* eslint-disable @typescript-eslint/no-misused-promises */
+	checkBtn.addEventListener("click", async () => {
+		// All questions must be answered.
+		const left = rows.filter((r) => !r.select.value).length;
+		if (rows.some((r) => !r.select.value)) {
+			new Notice(`${left} questions left.`);
+			return;
+		}
+
+		for (const r of rows) {
+			const selectedId = r.select.value;
+			const isCorrect = selectedId === r.correctOption;
+			const selectedOpt = quiz.options.find((o) => (o.id ?? o.content) === selectedId);
+
+			// consume answer: remove select, replace with answer block + feedback
+			r.select.remove();
+			r.resultHost.empty();
+
+			const answer = r.resultHost.createDiv({ cls: "quiz-choice-answer" });
+			answer.toggleClass("is-correct", isCorrect);
+			answer.toggleClass("is-wrong", !isCorrect);
+
+			if (selectedOpt) {
+				await renderInlineMarkdown(app, component, selectedOpt.content, answer, ctx.sourcePath);
+			} else {
+				answer.setText(selectedId);
+			}
+
+			const fbText = r.feedbackText ?? "";
+			if (fbText.trim()) {
+				const fb = r.resultHost.createDiv({ cls: "quiz-choice-feedback" });
+				fb.toggleClass("is-correct", isCorrect);
+				fb.toggleClass("is-wrong", !isCorrect);
+				await MarkdownRenderer.render(app, fbText, fb, ctx.sourcePath, component);
+				unwrapSingleParagraph(fb);
+			}
+		}
+
+		checkBtn.addClass("is-hidden");
+		resetBtn.removeClass("is-hidden");
+	});
+
+	resetBtn.addEventListener("click", () => void rerender());
+}
+
 async function renderInlineMarkdown(
 	app: App,
 	component: Component,
@@ -378,6 +539,22 @@ async function renderInlineMarkdown(
 	} else {
 		while (tmp.firstChild) host.appendChild(tmp.firstChild);
 	}
+}
+
+async function markdownToPlainText(
+	app: App,
+	component: Component,
+	markdown: string,
+	sourcePath: string
+) {
+	// const tmp = document.createElement("div");
+	// await MarkdownRenderer.render(app, markdown, tmp, sourcePath, component);
+	// return (tmp.textContent ?? "").replace(/\s+/g, " ").trim();
+	const tmp = document.createElement("div");
+	await MarkdownRenderer.render(app, markdown, tmp, sourcePath, component);
+	const content = (tmp.textContent ?? "").replace(/\s+/g, " ").trim();
+	tmp.remove();
+	return content;
 }
 
 function unwrapSingleParagraph(host: HTMLElement) {
