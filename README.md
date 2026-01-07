@@ -1,3 +1,13 @@
+## Community request
+
+> [@30DayThrill:](https://www.reddit.com/r/ObsidianMD/comments/17lcsvf/quizzing_plugin_strategies_for_obsidian/)
+> looking for a quizlet-esque solution where I can create more multiple choice or question and answer style tests.
+
+> [@Deleted:](https://www.reddit.com/r/ObsidianMD/comments/1ns1g7z/making_mcq_questions_in_obsidian/)
+> in such a way that a maximum of one option is choosable for each question.
+
+> [@amcasas:](https://forum.obsidian.md/t/quiz-type-plugin/2237) some type of quiz function that you can add at the end of each note
+
 # Obsidian Sample Plugin
 
 This is a sample plugin for Obsidian (https://obsidian.md).
