@@ -3,7 +3,7 @@ import { checkboxSnippet, choiceSnippet, radioSnippet } from "./snippets";
 import { renderQuiz } from "./renderer";
 
 export default class QuizBlocksPlugin extends Plugin {
-	async onload() {
+	onload() {
 		this.registerMarkdownCodeBlockProcessor("quiz", async (source, el, ctx) => {
 			await renderQuiz({
 				app: this.app,

@@ -153,8 +153,9 @@ export async function renderQuiz({ app, component, source, el, ctx }: RenderArgs
 		unwrapSingleParagraph(row.feedbackEl);
 	};
 
-	/* eslint-disable @typescript-eslint/no-misused-promises */
-	checkBtn.addEventListener("click", async () => {
+	checkBtn.addEventListener("click", () => void onCheckClick().catch(console.error));
+
+	async function onCheckClick() {
 		const selectedRows = rows.filter((r) => r.input.checked);
 		if (selectedRows.length === 0) return;
 
@@ -200,7 +201,7 @@ export async function renderQuiz({ app, component, source, el, ctx }: RenderArgs
 
 		checkBtn.addClass("is-hidden");
 		resetBtn.removeClass("is-hidden");
-	});
+	}
 
 	resetBtn.addEventListener("click", () => clearState());
 }
@@ -478,8 +479,9 @@ async function renderChoiceQuiz(
 
 	updateCheckState(); // check button is disabled on start.
 
-	/* eslint-disable @typescript-eslint/no-misused-promises */
-	checkBtn.addEventListener("click", async () => {
+	checkBtn.addEventListener("click", () => void onCheckClick().catch(console.error));
+
+	async function onCheckClick() {
 		// All questions must be answered.
 		const left = rows.filter((r) => !r.select.value).length;
 		if (rows.some((r) => !r.select.value)) {
@@ -518,7 +520,7 @@ async function renderChoiceQuiz(
 
 		checkBtn.addClass("is-hidden");
 		resetBtn.removeClass("is-hidden");
-	});
+	}
 
 	resetBtn.addEventListener("click", () => void rerender());
 }
