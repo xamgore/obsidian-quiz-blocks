@@ -20,7 +20,7 @@
 	border: 1px solid var(--background-modifier-border);
 	border-radius: 10px;
 	padding: 12px;
-	margin: 8px 0;
+	margin: 2px; /* offset from in-editor outline */
 }
 
 .quiz-block .quiz-block-error {
@@ -28,13 +28,18 @@
 }
 
 
-.quiz-block .quiz-question {
-	margin: 0 4px 10px;
+.quiz-block .quiz-title:not(:empty) {
+	padding: 0 4px 24px;
 }
 
+.quiz-block .quiz-form {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
 
 .quiz-block .quiz-option {
-	padding: 6px 8px;
+	padding: 0 8px;
 	border-radius: 8px;
 	margin: 0;
 }
@@ -73,7 +78,7 @@
 .quiz-block .quiz-actions {
 	display: flex;
 	gap: 8px;
-	margin-top: 10px;
+	padding-top: 30px;
 }
 
 .quiz-block .visually-hidden {
@@ -156,11 +161,10 @@
 }
 
 /* --- choice quiz (questions + <select>) --- */
-.quiz-block .quiz-choice-questions {
+.quiz-block .quiz-choice {
 	display: flex;
 	flex-direction: column;
 	gap: 16px;
-	padding-block: 16px;
 }
 
 .quiz-block .quiz-choice-question {
@@ -173,6 +177,10 @@
 }
 
 .quiz-block .quiz-choice-question-text {
+}
+
+.quiz-block .quiz-choice-result:empty {
+	display: none;
 }
 
 .quiz-block .quiz-choice-select {

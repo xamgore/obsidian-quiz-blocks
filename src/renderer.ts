@@ -41,8 +41,8 @@ export async function renderQuiz({ app, component, source, el, ctx }: RenderArgs
 	const container = el.createDiv({ cls: "quiz-block" });
 	container.dataset.quizId = stableId;
 
-	const questionEl = container.createDiv({ cls: "quiz-question" });
-	await renderInlineMarkdown(app, component, quiz.content, questionEl, ctx.sourcePath);
+	const titleEl = container.createDiv({ cls: "quiz-title" });
+	await renderInlineMarkdown(app, component, quiz.content, titleEl, ctx.sourcePath);
 
 	if (quiz.type === "choice") {
 		await renderChoiceQuiz({
@@ -395,7 +395,7 @@ async function renderChoiceQuiz(
 		rerender,
 	}: RenderChoiceArgs
 ): Promise<void> {
-	const questionsHost = container.createDiv({ cls: "quiz-choice-questions" });
+	const questionsHost = container.createDiv({ cls: "quiz-choice" });
 
 	// Precompute plain-text labels for <option> (since <option> can't host rich HTML).
 	const optionLabel = new Map<string, string>();
