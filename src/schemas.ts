@@ -19,8 +19,9 @@ export const QuizOptionSchema = z.preprocess((input) => {
 
 	const obj = input as Record<string, unknown>;
 	const content = obj.content ?? obj.text ?? obj.answer ?? obj.option;
+	const id = obj.id ?? content ?? undefined;
 
-	return { ...obj, content };
+	return { ...obj, id, content };
 }, z.object({
 	id: optionalIdSchema,
 	correct: nullToUndefined(z.boolean()).default(false),
