@@ -12,10 +12,6 @@
 	}
 }
 
-.quiz-block .is-hidden {
-	display: none;
-}
-
 .quiz-block {
 	border: 1px solid var(--background-modifier-border);
 	border-radius: 10px;
@@ -154,7 +150,7 @@
 }
 
 /* ⓧ wrong selected: red fill, KEEP white ring */
-.quiz-block .quiz-form-choice__control.radio.quiz-radio--wrong.radio_disabled.radio_checked.radio_view_default {
+.quiz-block .quiz-form-choice__control.radio.quiz-radio--mistake.radio_disabled.radio_checked.radio_view_default {
 	background-color: var(--quiz-wrong);
 	box-shadow: var(--quiz-wrong) 0 0 0 1.5px inset;
 	color: var(--quiz-icon-color); /* icon color */

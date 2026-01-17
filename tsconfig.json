@@ -1,5 +1,7 @@
 {
 	"compilerOptions": {
+		"verbatimModuleSyntax": true,
+		"skipLibCheck": true,
 		"baseUrl": "src",
 		"inlineSourceMap": true,
 		"inlineSources": true,
@@ -25,6 +27,7 @@
 		]
 	},
 	"include": [
-		"src/**/*.ts"
+		"src/**/*.ts",
+		"src/**/*.svelte"
 	]
 }

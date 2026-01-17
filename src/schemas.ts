@@ -8,12 +8,6 @@ const optionalIdSchema = z.preprocess((v) => {
 	return typeof v === 'string' || typeof v === 'number' || typeof v === 'boolean' ? String(v) : v;
 }, z.string().min(1).optional());
 
-export const QuizSectionSchema = z.object({
-	id: optionalIdSchema,
-	color: nullToUndefined(z.string()).optional(),
-
-})
-
 export const QuizOptionSchema = z.preprocess((input) => {
 	if (typeof input !== "object" || input === null) return input;
 
@@ -25,8 +19,8 @@ export const QuizOptionSchema = z.preprocess((input) => {
 }, z.object({
 	id: optionalIdSchema,
 	correct: nullToUndefined(z.boolean()).default(false),
-	content: nullToUndefined(z.string()).default(""),
-	feedback: nullToUndefined(z.string()).optional(),
+	content: z.string().default(""),
+	feedback: z.string().default("").transform(s => s.trim()),
 }));
 
 export const QuizChoiceQuestionSchema = z.preprocess((input) => {
@@ -40,9 +34,9 @@ export const QuizChoiceQuestionSchema = z.preprocess((input) => {
 	return { ...obj, content, correct_option };
 }, z.object({
 	id: optionalIdSchema,
-	content: nullToUndefined(z.string()).default(""),
+	content: z.string().default(""),
 	correct_option: optionalIdSchema,
-	feedback: nullToUndefined(z.string()).optional(),
+	feedback: z.string().default("").transform(s => s.trim()),
 }));
 
 /* quiz types */

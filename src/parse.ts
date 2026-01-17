@@ -1,5 +1,5 @@
 import { parse } from "yaml";
-import { QuizSchema, type Quiz } from "./schemas";
+import { type Quiz, QuizSchema } from "./schemas";
 
 export function parseQuizBlock(source: string): Quiz {
 	const raw = source.trim();
