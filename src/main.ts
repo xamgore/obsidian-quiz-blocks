@@ -4,8 +4,8 @@ import { renderQuiz } from "./renderer";
 
 export default class QuizBlocksPlugin extends Plugin {
 	onload() {
-		this.registerMarkdownCodeBlockProcessor("quiz", async (source, el, ctx) => {
-			await renderQuiz({
+		this.registerMarkdownCodeBlockProcessor("quiz", (source, el, ctx) => {
+			renderQuiz({
 				app: this.app,
 				component: this,
 				source,

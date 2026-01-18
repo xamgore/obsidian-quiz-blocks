@@ -44,7 +44,7 @@ class QuizSvelteChild extends MarkdownRenderChild {
 	}
 }
 
-export async function renderQuiz({ app, component, source, el, ctx }: RenderArgs) {
+export function renderQuiz({ app, component, source, el, ctx }: RenderArgs) {
 	el.empty();
 
 	let quiz: Quiz;
