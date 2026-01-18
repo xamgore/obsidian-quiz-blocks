@@ -1,7 +1,7 @@
 {
 	"id": "quiz-blocks",
 	"name": "Quiz blocks",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"minAppVersion": "0.15.0",
 	"description": "Render ```quiz code blocks into interactive multiple-choice quizzes. Pick an answer, check if you’re right, and see explanations right inside your notes.",
 	"author": "Igor Strebz",
