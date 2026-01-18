@@ -55,6 +55,16 @@ const QuizCheckboxSchema = z.object({
 	options: z.array(QuizOptionSchema),
 });
 
+const QuizTextSchema = z.object({
+	id: optionalIdSchema,
+	type: z.literal("text"),
+	content: z.string().default(""),
+	// Free-text quizzes can't be auto-graded (yet). This is the reference answer.
+	correct: z.string().optional().transform((s) => (s ?? "").trim()),
+	// Optional extra feedback/explanation shown after checking.
+	feedback: z.string().optional().transform((s) => (s ?? "").trim()),
+});
+
 const QuizChoiceSchema = z
 	.object({
 		id: optionalIdSchema,
@@ -146,7 +156,7 @@ export const QuizSchema = z.preprocess((input) => {
 	const content = obj.content ?? obj.text ?? obj.question;
 
 	return { ...obj, content };
-}, z.discriminatedUnion("type", [QuizRadioSchema, QuizCheckboxSchema, QuizChoiceSchema, QuizNoodleSchema]));
+}, z.discriminatedUnion("type", [QuizRadioSchema, QuizCheckboxSchema, QuizTextSchema, QuizChoiceSchema, QuizNoodleSchema]));
 
 export type QuizOption = z.infer<typeof QuizOptionSchema>;
 export type QuizChoiceQuestion = z.infer<typeof QuizChoiceQuestionSchema>;

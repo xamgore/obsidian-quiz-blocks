@@ -131,6 +131,26 @@ questions:
 
 </details>
 
+### `text` — free text without forced validation
+
+<img src=".github/demo-text.png" width=430 alt="" />
+
+<details><summary>show code</summary>
+
+````yaml
+```quiz
+type: text
+content: >-
+    Should you believe in God?
+
+# optional reference answer shown after pressing [Check]
+correct: >-
+    Well, there is no the right answer here, as it's all personal.
+```
+````
+
+</details>
+
 ## Installation
 
 ~~Directly using this link: [`obsidian://show-plugin?id=quiz-blocks`](obsidian://show-plugin?id=quiz-blocks)~~
@@ -167,7 +187,7 @@ questions:
 - Quiz blocks are rendered in preview/reading mode.
 - Errors related to missing fields can be awkward.
 - Chosen answers are kept until the page is closed.
-- Two more quiz types are planned: free text.
+- More quiz types planned: cards.
 - This is an early-stage plugin — feel free to open an issue and share feedback.
 
 

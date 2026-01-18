@@ -11,6 +11,9 @@ importers:
       obsidian:
         specifier: latest
         version: 1.11.0(@codemirror/state@6.5.0)(@codemirror/view@6.38.6)
+      svelte-autosize:
+        specifier: ^1.1.5
+        version: 1.1.5(svelte@5.46.4)
       yaml:
         specifier: 2.8.2
         version: 2.8.2
@@ -324,6 +327,9 @@ packages:
     peerDependencies:
       acorn: ^8.9.0
 
+  '@types/autosize@4.0.3':
+    resolution: {integrity: sha512-o0ZyU3ePp3+KRbhHsY4ogjc+ZQWgVN5h6j8BHW5RII4cFKi6PEKK9QPAcphJVkD0dGpyFnD3VRR0WMvHVjCv9w==}
+
   '@types/codemirror@5.60.8':
     resolution: {integrity: sha512-VjFgDF/eB+Aklcy15TtOTLQeMjTo07k7KAjql8OK5Dirr7a6sJY4T1uVBDuTVG9VEmn1uUsohOpYnVfgC6/jyw==}
 
@@ -469,6 +475,9 @@ packages:
   async-function@1.0.0:
     resolution: {integrity: sha512-hsU18Ae8CDTR6Kgu9DYf0EbCr/a5iGL0rytQDobUcdpYOKokk8LEjVphnXkDkgpi0wYVsqrXuP0bZxJaTqdgoA==}
     engines: {node: '>= 0.4'}
+
+  autosize@6.0.1:
+    resolution: {integrity: sha512-f86EjiUKE6Xvczc4ioP1JBlWG7FKrE13qe/DxBCpe8GCipCq2nFw73aO8QEBKHfSbYGDN5eB9jXWKen7tspDqQ==}
 
   available-typed-arrays@1.0.7:
     resolution: {integrity: sha512-wvUjBtSGN7+7SjNpq/9M2Tg350UZD3q62IFZLbRAR1bSMlCo1ZaeW+BJ+D090e4hIIZLBcTDWe4Mh4jvUDajzQ==}
@@ -1369,6 +1378,11 @@ packages:
     resolution: {integrity: sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==}
     engines: {node: '>= 0.4'}
 
+  svelte-autosize@1.1.5:
+    resolution: {integrity: sha512-whiND/GthFDG9Ansvil21qxmFhSMfuooVZPg40sbcLHYKR9srYhnfrP5qdw8MXHAm6DY9g5PawurOAWl34fK7g==}
+    peerDependencies:
+      svelte: '>=3.0.0'
+
   svelte-check@4.3.5:
     resolution: {integrity: sha512-e4VWZETyXaKGhpkxOXP+B/d0Fp/zKViZoJmneZWe/05Y2aqSKj3YN2nLfYPJBQ87WEiY4BQCQ9hWGu9mPT1a1Q==}
     engines: {node: '>= 18.0.0'}
@@ -1739,6 +1753,8 @@ snapshots:
     dependencies:
       acorn: 8.15.0
 
+  '@types/autosize@4.0.3': {}
+
   '@types/codemirror@5.60.8':
     dependencies:
       '@types/tern': 0.23.9
@@ -1953,6 +1969,8 @@ snapshots:
       is-array-buffer: 3.0.5
 
   async-function@1.0.0: {}
+
+  autosize@6.0.1: {}
 
   available-typed-arrays@1.0.7:
     dependencies:
@@ -3082,6 +3100,12 @@ snapshots:
       has-flag: 4.0.0
 
   supports-preserve-symlinks-flag@1.0.0: {}
+
+  svelte-autosize@1.1.5(svelte@5.46.4):
+    dependencies:
+      '@types/autosize': 4.0.3
+      autosize: 6.0.1
+      svelte: 5.46.4
 
   svelte-check@4.3.5(picomatch@4.0.3)(svelte@5.46.4)(typescript@5.9.3):
     dependencies:

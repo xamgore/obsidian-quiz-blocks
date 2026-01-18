@@ -24,6 +24,16 @@ options:
   correct: true
 \`\`\``;
 
+export const textSnippet = `\`\`\`quiz
+type: text
+content: >-
+  Your question here?
+
+# optional reference answer shown after pressing Check
+correct: >-
+    
+\`\`\``;
+
 export const choiceSnippet = `\`\`\`quiz
 type: choice
 content: >-

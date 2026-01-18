@@ -436,3 +436,14 @@
 .quiz-block .quiz-noodle.is-constructing {
 	cursor: pointer;
 }
+
+
+/* quiz-text */
+.quiz-block .quiz-textarea {
+	width: 100%;
+	max-width: 100%;
+	min-height: 96px;
+	resize: vertical;
+	font: inherit;
+	color: inherit;
+}
