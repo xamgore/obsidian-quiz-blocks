@@ -135,7 +135,7 @@
 	background-color: rgba(255, 255, 255, 0.12);
 }
 
-/* ✅ correct selected: green fill, KEEP white ring */
+/* correct selected: green fill, KEEP white ring */
 .quiz-block .quiz-form-choice__control.radio.quiz-radio--correct.radio_disabled.radio_checked.radio_view_default {
 	background-color: var(--quiz-correct);
 	box-shadow: var(--quiz-correct) 0 0 0 1.5px inset;
@@ -222,4 +222,217 @@
 
 .quiz-block .quiz-choice-feedback p {
 	margin: 0;
+}
+
+/* --- noodle quiz --- */
+
+.quiz-block .quiz-noodle {
+	position: relative;
+	user-select: none;
+
+	& * {
+		user-select: none;
+	}
+}
+
+.quiz-block .quiz-noodle-lines {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	pointer-events: none;
+	overflow: visible;
+}
+
+.quiz-block .quiz-noodle-lists {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 60px;
+}
+
+.quiz-block .quiz-noodle-list {
+	margin: 0;
+}
+
+.quiz-block .quiz-noodle-items {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.quiz-block .quiz-noodle-item-row {
+	margin: 0;
+}
+
+.quiz-block .quiz-noodle-item {
+	width: 100%;
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	padding: 10px 12px;
+	border-radius: 10px;
+	border: 1px solid var(--background-modifier-border);
+	background: var(--background-primary);
+	color: var(--text-normal);
+	cursor: pointer;
+	text-align: left;
+	font-size: inherit;
+}
+
+.quiz-block .quiz-noodle-item:disabled {
+	cursor: default;
+	opacity: 0.85;
+}
+
+/* Only normal selection ring, NOT green/red box borders */
+.quiz-block .quiz-noodle-item.is-active {
+	box-shadow: 0 0 0 2px var(--quiz-accent-color) inset;
+}
+
+.quiz-block .quiz-noodle-item.is-target {
+	box-shadow: 0 0 0 2px var(--quiz-accent-color) inset;
+}
+
+.quiz-block .quiz-noodle-item--left {
+	justify-content: flex-end; /* pin + label */
+}
+
+.quiz-block .quiz-noodle-item--right {
+	justify-content: flex-start;
+}
+
+.quiz-block .quiz-noodle-label p {
+	margin: 0;
+}
+
+/* --- pin / circle --- */
+.quiz-block .quiz-noodle-pin {
+	flex: 0 0 auto;
+	width: 16px;
+	height: 16px;
+	border-radius: 999px;
+
+	--pin-border: 1.5px;
+	box-shadow: var(--quiz-accent-color) 0 0 0 var(--pin-border) inset;
+	background: transparent;
+
+	transition: background-color 120ms ease,
+	box-shadow 120ms ease,
+	transform 120ms ease;
+}
+
+/* Hover on pin OR hover on the whole box highlights the pin */
+.quiz-block .quiz-noodle-pin:hover,
+.quiz-block .quiz-noodle-item:hover .quiz-noodle-pin {
+	background: rgba(255, 255, 255, 0.10);
+}
+
+/* When connected: subtle filled pin */
+.quiz-block .quiz-noodle-pin.is-connected {
+	background: rgba(255, 255, 255, 0.14);
+}
+
+/* Starting pin while constructing */
+.quiz-block .quiz-noodle-pin.is-start {
+	transform: scale(1.08);
+	box-shadow: var(--quiz-accent-color) 0 0 0 var(--pin-border) inset,
+	0 0 0 2px rgba(255, 255, 255, 0.06);
+	background: rgba(255, 255, 255, 0.16);
+}
+
+/* Target pin while snapping */
+.quiz-block .quiz-noodle-pin.is-target {
+	transform: scale(1.10);
+	box-shadow: var(--quiz-accent-color) 0 0 0 var(--pin-border) inset;
+	background: rgba(255, 255, 255, 0.18);
+}
+
+/* Frozen correctness shown ONLY via pin + noodle */
+.quiz-block .quiz-noodle-pin.is-correct {
+	box-shadow: var(--quiz-correct) 0 0 0 var(--pin-border) inset;
+	background: rgba(28, 156, 117, 0.18);
+}
+
+.quiz-block .quiz-noodle-pin.is-wrong {
+	box-shadow: var(--quiz-wrong) 0 0 0 var(--pin-border) inset;
+	background: rgba(255, 59, 48, 0.18);
+}
+
+/* --- feedback --- */
+.quiz-block .quiz-noodle-feedback {
+	margin-top: 6px;
+	margin-left: 4px;
+	font-size: var(--font-smaller);
+	line-height: 1.35;
+}
+
+.quiz-block .quiz-noodle-feedback.is-correct {
+	color: var(--quiz-correct);
+}
+
+.quiz-block .quiz-noodle-feedback.is-wrong {
+	color: var(--quiz-wrong);
+}
+
+.quiz-block .quiz-noodle-feedback p {
+	margin: 0;
+}
+
+/* --- noodle (SVG) --- */
+.quiz-block .quiz-noodle-line {
+	pointer-events: all; /* allow cutting */
+	cursor: col-resize; /* cutting cursor */
+}
+
+.quiz-block .quiz-noodle-line:hover .quiz-noodle-line-body,
+.quiz-block .quiz-noodle-line:focus-within .quiz-noodle-line-body {
+	filter: brightness(0.7);
+}
+
+/* hit area total 5px (2px visible + ~3px invisible) */
+.quiz-block .quiz-noodle-line-hit {
+	fill: none;
+	stroke: transparent;
+	stroke-width: 8;
+	stroke-linecap: round;
+}
+
+/* Border stroke makes noodle readable at intersections */
+.quiz-block .quiz-noodle-line-border {
+	fill: none;
+	stroke: var(--background-primary);
+	stroke-width: 4;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+}
+
+.quiz-block .quiz-noodle-line-body {
+	fill: none;
+	stroke: var(--quiz-accent-color);
+	stroke-width: 2;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+}
+
+/* Pending noodle: slightly different look */
+.quiz-block .quiz-noodle-line--pending .quiz-noodle-line-body {
+	stroke-dasharray: 6 6;
+	opacity: 0.9;
+}
+
+.quiz-block .quiz-noodle-line.is-correct .quiz-noodle-line-body {
+	stroke: var(--quiz-correct);
+}
+
+.quiz-block .quiz-noodle-line.is-wrong .quiz-noodle-line-body {
+	stroke: var(--quiz-wrong);
+}
+
+/* no text-selection cursor while dragging */
+.quiz-block .quiz-noodle.is-dragging,
+.quiz-block .quiz-noodle.is-constructing {
+	cursor: pointer;
 }

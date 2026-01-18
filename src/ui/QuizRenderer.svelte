@@ -6,6 +6,7 @@
 	import QuizChoice from "./QuizChoice.svelte";
 	import QuizRadio from "./QuizRadio.svelte";
 	import QuizCheckbox from "./QuizCheckbox.svelte";
+	import QuizNoodle from "./QuizNoodle.svelte";
 
 	interface Props {
 		ctx: AppContext,
@@ -24,6 +25,8 @@
 
 	{#if quiz.type === "choice"}
 		<QuizChoice {ctx} quiz={quiz}/>
+	{:else if quiz.type === "noodle"}
+		<QuizNoodle {ctx} quiz={quiz}/>
 	{:else if quiz.type === "radio"}
 		<QuizRadio {ctx} {stableId} quiz={quiz}/>
 	{:else if quiz.type === "checkbox"}

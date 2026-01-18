@@ -41,3 +41,21 @@ questions:
 - content: "Situation #2"
   correct_option: opt2
 \`\`\``;
+
+export const noodleSnippet = `\`\`\`quiz
+type: noodle
+content: >-
+  Connect each question on the right with the matching option on the left.
+
+options:
+- id: opt1
+  content: "Option 1"
+- id: opt2
+  content: "Option 2"
+
+questions:
+- content: "Question #1"
+  correct_option: opt1
+- content: "Question #2"
+  correct_option: opt2
+\`\`\``;

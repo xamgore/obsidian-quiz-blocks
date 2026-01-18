@@ -99,6 +99,38 @@ questions:
 
 </details>
 
+### `noodle` — multiple questions connected with options
+
+<img src=".github/demo-noodle.png" width=430 alt="" />
+
+<details><summary>show code</summary>
+
+````yaml
+```quiz
+type: noodle
+content: >-
+  Connect each country with its capital.
+
+options:
+- content: Moscow
+- content: Paris
+- content: Oslo
+- content: Kiev
+
+questions:
+- content: France
+  correct: Paris
+
+- content: Norway
+  correct: Oslo
+
+- content: Ukraine
+  correct: Kiev
+```
+````
+
+</details>
+
 ## Installation
 
 ~~Directly using this link: [`obsidian://show-plugin?id=quiz-blocks`](obsidian://show-plugin?id=quiz-blocks)~~
@@ -135,7 +167,7 @@ questions:
 - Quiz blocks are rendered in preview/reading mode.
 - Errors related to missing fields can be awkward.
 - Chosen answers are kept until the page is closed.
-- Two more quiz types are planned: free text, noodles.
+- Two more quiz types are planned: free text.
 - This is an early-stage plugin — feel free to open an issue and share feedback.
 
 

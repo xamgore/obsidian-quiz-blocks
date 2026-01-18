@@ -1,5 +1,5 @@
 import { Plugin } from "obsidian";
-import { checkboxSnippet, choiceSnippet, radioSnippet } from "./snippets";
+import { checkboxSnippet, choiceSnippet, noodleSnippet, radioSnippet } from "./snippets";
 import { renderQuiz } from "./renderer";
 
 export default class QuizBlocksPlugin extends Plugin {
@@ -35,6 +35,14 @@ export default class QuizBlocksPlugin extends Plugin {
 			name: "Insert quiz (choice)",
 			editorCallback: (editor) => {
 				editor.replaceRange(choiceSnippet, editor.getCursor());
+			},
+		});
+
+		this.addCommand({
+			id: "insert-quiz-block-noodle",
+			name: "Insert quiz (noodle)",
+			editorCallback: (editor) => {
+				editor.replaceRange(noodleSnippet, editor.getCursor());
 			},
 		});
 	}

@@ -60,8 +60,8 @@ const QuizChoiceSchema = z
 		id: optionalIdSchema,
 		type: z.literal("choice"),
 		content: z.string().default(""),
-		options: z.array(QuizOptionSchema),
-		questions: z.array(QuizChoiceQuestionSchema),
+		options: z.array(QuizOptionSchema).default([]),
+		questions: z.array(QuizChoiceQuestionSchema).default([]),
 	})
 	.superRefine((quiz, ctx) => {
 		// Choice quizzes require ids for option lookup.
@@ -97,6 +97,48 @@ const QuizChoiceSchema = z
 		});
 	});
 
+const QuizNoodleSchema = z
+	.object({
+		id: optionalIdSchema,
+		type: z.literal("noodle"),
+		content: z.string().default(""),
+		options: z.array(QuizOptionSchema).default([]),
+		questions: z.array(QuizChoiceQuestionSchema).default([]),
+	})
+	.superRefine((quiz, ctx) => {
+		// Noodle quizzes require ids for option lookup.
+		const ids = new Set<string>();
+		quiz.options.forEach((opt, i) => {
+			if (!opt.id) {
+				ctx.addIssue({
+					code: "custom",
+					message: `options[${i}].id is required for noodle quizzes`,
+					path: ["options", i, "id"],
+				});
+				return;
+			}
+
+			if (ids.has(opt.id)) {
+				ctx.addIssue({
+					code: "custom",
+					message: `Duplicate option id: ${opt.id}`,
+					path: ["options", i, "id"],
+				});
+			}
+			ids.add(opt.id);
+		});
+
+		quiz.questions.forEach((q, i) => {
+			if (q.correct_option && !ids.has(q.correct_option)) {
+				ctx.addIssue({
+					code: "custom",
+					message: `questions[${i}].correct_option references unknown option id: ${q.correct_option}`,
+					path: ["questions", i, "correct_option"],
+				});
+			}
+		});
+	});
+
 export const QuizSchema = z.preprocess((input) => {
 	if (typeof input !== "object" || input === null) return input;
 
@@ -104,7 +146,7 @@ export const QuizSchema = z.preprocess((input) => {
 	const content = obj.content ?? obj.text ?? obj.question;
 
 	return { ...obj, content };
-}, z.discriminatedUnion("type", [QuizRadioSchema, QuizCheckboxSchema, QuizChoiceSchema]));
+}, z.discriminatedUnion("type", [QuizRadioSchema, QuizCheckboxSchema, QuizChoiceSchema, QuizNoodleSchema]));
 
 export type QuizOption = z.infer<typeof QuizOptionSchema>;
 export type QuizChoiceQuestion = z.infer<typeof QuizChoiceQuestionSchema>;
